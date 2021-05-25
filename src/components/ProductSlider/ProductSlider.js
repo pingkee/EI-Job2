@@ -15,7 +15,7 @@ const ProductSlider = (
                     <div style={{padding: '2rem'}}><img
                         ref={imageRef}
                         src={image}
-                        alt={image.toString()}
+                        alt={image}
                         style={{width: '100%',
                                 height: '100%'}}
                     /></div>

@@ -1,8 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import Product from "../../components/Product/Product";
-import {connect} from 'react-redux';
+import ClipLoader from "react-spinners/ClipLoader";
 import {orderByFilter} from "../../pipes/orderByFilter";
 import LayoutMode from "../../components/LayoutMode/LayoutMode";
+import ContextProduct from '../../context/ContextProduct';
+import { ProductStateAction } from '../../reducers/reducerProduct';
 
 const ProductLists = (props) => {
     const {
@@ -11,12 +13,26 @@ const ProductLists = (props) => {
     const [products, setProducts] = useState();
     const [colValue, setcolValue] = useState('col-lg-4');
     const [gridValue, setgridValue] = useState(3);
+    const { ProductState, ProductDispatch } = useContext(ContextProduct);
 
 useEffect(() => {
-    fetch('https://fakestoreapi.com/products')
+    if(!ProductState || !ProductState.Products || !ProductState.Products[0]) {
+        fetch('https://fakestoreapi.com/products')
             .then(res=>res.json())
-            .then(json=> setProducts(orderByFilter(json, orderBy)));
-}, [orderBy, setProducts]);
+            .then(json=> {
+                ProductDispatch({
+                    type: ProductStateAction.INIT_PRODUCT,
+                    payload: {
+                        Products: json,
+                    }
+                });
+                setProducts(orderByFilter(json, orderBy));
+            });
+    } else {
+        setProducts(ProductState.Products);
+    }
+}, [ProductDispatch, ProductState, orderBy, setProducts]);
+
 
 const changeLayout = (n) => {
     setgridValue(n);
@@ -45,6 +61,9 @@ const changeLayout = (n) => {
                 </div>
             </div>
             <div>
+                <div style={{textAlign: 'center'}}>
+                    <ClipLoader color={'blue'} loading={!products} size={150} />
+                </div>
                 <div className="row">
                     {products && products.map((product => {
                         let classes = `${colValue} col-md-6 mb-4`;
@@ -58,10 +77,4 @@ const changeLayout = (n) => {
     );
 }
 
-const mapStateToProps = state => {
-    const orderBy = state.orderBy;
-
-
-    return {orderBy: orderBy }
-};
-export default connect(mapStateToProps, null)(ProductLists);
+export default ProductLists;

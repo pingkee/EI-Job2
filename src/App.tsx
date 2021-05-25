@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useReducer } from 'react';
 import {Provider} from 'react-redux';
 import {createStore, compose } from 'redux';
 import rootReducer from './reducers';
@@ -12,6 +12,8 @@ import Footer from './components/Footer/Footer';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
 import ShoppingCart from './pages/ShopingCart/ShoppingCart';
 import Home from './pages/Home/Home';
+import reducerProduct, { iniProductState, ProductStateAction } from './reducers/reducerProduct';
+import ContextProduct from './context/ContextProduct';
 
 declare global {
   interface Window {
@@ -28,23 +30,40 @@ const composeEnhancers2 = window.__REDUX_DEVTOOLS_EXTENSION__ || compose;
 export const  store = createStore(rootReducer, composeEnhancers && composeEnhancers2());
 
 const App = () => {
+  const [ProductState, ProductDispatch] = useReducer(reducerProduct, iniProductState);
+
+  useEffect(() => {
+    fetch('https://fakestoreapi.com/products')
+      .then(res=>res.json())
+      .then(json=> {
+          ProductDispatch({
+              type: ProductStateAction.INIT_PRODUCT,
+              payload: {
+                  Products: json,
+              }
+          });
+    });
+  }, []);
+
   return (
     <Provider store={store}>
-      <HashRouter basename='/'>
-        <React.Fragment>
-            <Header cartLength={0}/>
-            <Switch>
-                <Route exact path={'/'} render={() => {
-                    return <Redirect to={'/home'}/>
-                }}/>
-                <Route exact path={'/home'} component={Home}/>
-                <Route exact path={'/products'} component={ProductPage}/>
-                <Route exact path={'/products/:id'} component={ProductDetail}/>
-                <Route exact patr={'/cart'} component={ShoppingCart}/>
-            </Switch>
-            <Footer/>
-        </React.Fragment>
-        </HashRouter>
+      <ContextProduct.Provider value={{ ProductState, ProductDispatch }}>
+        <HashRouter basename='/'>
+          <React.Fragment>
+              <Header cartLength={0}/>
+              <Switch>
+                  <Route exact path={'/'} render={() => {
+                      return <Redirect to={'/home'}/>
+                  }}/>
+                  <Route exact path={'/home'} component={Home}/>
+                  <Route exact path={'/products'} component={ProductPage}/>
+                  <Route exact path={'/products/:id'} component={ProductDetail}/>
+                  <Route exact patr={'/cart'} component={ShoppingCart}/>
+              </Switch>
+              <Footer/>
+          </React.Fragment>
+          </HashRouter>
+      </ContextProduct.Provider>
     </Provider>
   );
 }

@@ -2,19 +2,18 @@ import {
     ADD_PRODUCT_TO_CART,
     DECREMENT_CART_ITEM_QUANTITY,
     INCREMENT_CART_ITEM_QUANTITY,
-    REMOVE_PRODUCT_FROM_CART
+    REMOVE_PRODUCT_FROM_CART,
+    INIT_PRODUCT,
 } from '../actions';
-
 
 const initialState = {
     products: [],
-    cart: []
-};
-
-
+    cart: [],
+}
 const shopReducer = (state = initialState, action ) => {
     let updatedCart;
     let updatedItemIndex;
+    let updatedProduct;
 
     switch (action.type) {
         case INCREMENT_CART_ITEM_QUANTITY:
@@ -75,6 +74,13 @@ const shopReducer = (state = initialState, action ) => {
             updatedCart.splice(updatedItemIndex, 1);
 
             return {...state, cart: updatedCart};
+        case INIT_PRODUCT:
+            updatedProduct = [...state.products];
+            if (action.payload.length() > 0) {
+                updatedProduct.push(action.payload);
+            }
+
+            return {...state, products: updatedProduct};
         default:
             return state;
 
