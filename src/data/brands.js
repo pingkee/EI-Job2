@@ -1,1 +1,0 @@
-export const Types = ["Stud","Loops","Fish Hooks","Dangle","Customize"];

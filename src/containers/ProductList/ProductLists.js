@@ -4,8 +4,6 @@ import {connect} from 'react-redux';
 import {orderByFilter} from "../../pipes/orderByFilter";
 import LayoutMode from "../../components/LayoutMode/LayoutMode";
 
-import axios from 'axios';
-
 const ProductLists = (props) => {
     const {
         orderBy,
@@ -15,8 +13,9 @@ const ProductLists = (props) => {
     const [gridValue, setgridValue] = useState(3);
 
 useEffect(() => {
-    axios.get('https://fakestoreapi.com/products').then(result => setProducts(orderByFilter(result.data, orderBy)));
-    
+    fetch('https://fakestoreapi.com/products')
+            .then(res=>res.json())
+            .then(json=> setProducts(orderByFilter(json, orderBy)));
 }, [orderBy, setProducts]);
 
 const changeLayout = (n) => {
