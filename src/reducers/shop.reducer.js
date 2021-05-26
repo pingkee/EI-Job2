@@ -52,16 +52,17 @@ const shopReducer = (state = initialState, action ) => {
         case ADD_PRODUCT_TO_CART:
             updatedCart = [...state.cart];
             updatedItemIndex = updatedCart.findIndex(item => item.id === action.payload.id);
-
-            if(updatedItemIndex < 0) {
+            if (updatedItemIndex < 0) {
                 updatedCart.push({...action.payload, quantity: 1});
             } else {
-                const updatedItem = {
-                    ...updatedCart[updatedItemIndex]
-                };
+                console.log('updatingCart: ', updatedCart);
+                console.log('payload: ', action.payload);
+                const items = updatedCart.concat();
+                items[updatedItemIndex] = {
+                    ...action.payload,
+                }
 
-                updatedItem.quantity++;
-                updatedCart[updatedItemIndex] = updatedItem;
+                updatedCart = items;
             }
 
             return {...state, cart: updatedCart};

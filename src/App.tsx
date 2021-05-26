@@ -56,8 +56,8 @@ const App = () => {
                       return <Redirect to={'/home'}/>
                   }}/>
                   <Route exact path={'/home'} component={Home}/>
-                  <Route exact path={'/products'} component={ProductPage}/>
-                  <Route exact path={'/products/:id'} component={ProductDetail}/>
+                    <Route exact path={'/products'} component={ProductPage}/>
+                    <Route exact path={'/products/:id'} component={ProductDetail}/>
                   <Route exact patr={'/cart'} component={ShoppingCart}/>
               </Switch>
               <Footer/>

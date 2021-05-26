@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import {formatMoney} from "../../pipes/priceFormatter";
 
 import './Product.scss';
-import {addProductToCart} from "../../actions";
+import { addToCart } from '../CartItem/cartFunc';
 
 
 const Product = (props) => {
@@ -32,9 +32,7 @@ const Product = (props) => {
                 <h5 className="product__price">${formatMoney(price)}</h5>
                 <p className="card-text product__description">{description}</p>
                 <button
-                    onClick={() => {
-                        props.dispatch(addProductToCart({...props.product}))
-                    }}
+                    onClick={() => {addToCart(props.product, props.dispatch)}}
                     className="btn btn-info product__add-to-cart">Add to cart
                 </button>
             </div>
@@ -43,4 +41,3 @@ const Product = (props) => {
 };
 
 export default connect()(Product);
-

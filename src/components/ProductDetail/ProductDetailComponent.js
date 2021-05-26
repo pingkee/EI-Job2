@@ -1,20 +1,15 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import {formatMoney} from "../../pipes/priceFormatter";
-import {addProductToCart} from "../../actions";
+import { addToCart } from '../CartItem/cartFunc';
 
-const ProductDetail = (props) => {
+const ProductDetailComponent = (props) => {
 
     const {
         title,
         price,
         description,
     } = props.product;
-
-
-    const onCart = () => {
-        props.dispatch(addProductToCart(props.product));
-    };
 
     return (
         <aside className="col-sm-7">
@@ -33,7 +28,7 @@ const ProductDetail = (props) => {
                 <hr/>
                 <hr/>
                 <button
-                    onClick={onCart}
+                    onClick={() => addToCart(props.product, props.dispatch)}
                     className="btn btn-lg btn-outline-primary text-uppercase"><i
                     className="fa fa-shopping-cart"/> Add to cart
                 </button>
@@ -42,4 +37,4 @@ const ProductDetail = (props) => {
     );
 };
 
-export default connect()(ProductDetail);
+export default connect()(ProductDetailComponent);
