@@ -10,25 +10,27 @@ const ShoppingCart = (props) => {
     const [cartItemCount, setTCartItemCount] = useState(0);
 
     useEffect(() => {
+        const exist =localStorage.getItem('EICart');
         const cart = JSON.parse(localStorage.getItem('EICart'));
-        if (props.cartItemCount > 0) {
+        if (props.cartItemCount > 0 && !exist.cart) {
+            console.log('cart dont exist');
             setCartItem(props.cartItems);
             setTCartItemCount(props.cartItemCount);
             setTotalPriceCount(props.totalPrice);
-            localStorage.setItem('EICart', JSON.stringify({
-                cart: props.cartItems,
-            }));
         } else {
             if (cart) {
+            console.log('inside cart');
                 setCartItem(cart.cart);
                 setTCartItemCount(cart.cart.reduce((count, curItem) => {
                     return count + curItem.quantity;
                 }, 0));
                 setTotalPriceCount(cart.cart.map(tp => tp.price).reduce((a, b) => a + b, 0))
                 cart.cart.map(element => {
-                    props.dispatch(addProductToCart({...element}));
+                    console.log('elementadd: ', element)
+                    props.dispatch(addProductToCart(element));
                 })
             } else {
+                console.log('outside cart');
                 setCartItem(props.cartItems);
                 setTCartItemCount(props.cartItemCount);
                 setTotalPriceCount(props.totalPrice);

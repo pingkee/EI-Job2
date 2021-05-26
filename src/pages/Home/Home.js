@@ -1,6 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import { connect } from 'react-redux';
+import {addProductToCart} from "../../actions";
 
-const Home = () => {
+const Home = (props) => {
+    useEffect(() => {
+        const cart = JSON.parse(localStorage.getItem('EICart'));
+            if (cart) {
+                cart.cart.map(element => {
+                    props.dispatch(addProductToCart(element));
+                })
+            }
+    }, [props]);
     return (
             <div className="container" style={{paddingTop: '6rem'}} >
                 <div className="row">
@@ -13,4 +23,4 @@ const Home = () => {
 };
 
 
-export default Home;
+export default connect()(Home);

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import {formatMoney} from "../../pipes/priceFormatter";
 import { addToCart } from '../CartItem/cartFunc';
+import {addProductToCart} from "../../actions";
 
 const ProductDetailComponent = (props) => {
 
@@ -11,6 +12,14 @@ const ProductDetailComponent = (props) => {
         description,
     } = props.product;
 
+    useEffect(() => {
+        const cart = JSON.parse(localStorage.getItem('EICart'));
+            if (cart) {
+                cart.cart.map(element => {
+                    props.dispatch(addProductToCart(element));
+                })
+            }
+    }, [props]);
     return (
         <aside className="col-sm-7">
             <article className="card-body p-5">

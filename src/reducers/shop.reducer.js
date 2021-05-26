@@ -53,6 +53,7 @@ const shopReducer = (state = initialState, action ) => {
             updatedCart = [...state.cart];
             updatedItemIndex = updatedCart.findIndex(item => item.id === action.payload.id);
             if (updatedItemIndex < 0) {
+                console.log('updated Item index is less than 1', updatedItemIndex);
                 updatedCart.push({...action.payload, quantity: 1});
             } else {
                 const items = updatedCart.concat();

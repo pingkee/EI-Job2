@@ -4,11 +4,10 @@ import ClipLoader from "react-spinners/ClipLoader";
 import LayoutMode from "../../components/LayoutMode/LayoutMode";
 import ContextProduct from '../../context/ContextProduct';
 import { ProductStateAction } from '../../reducers/reducerProduct';
+import {addProductToCart} from "../../actions";
+import { connect } from 'react-redux';
 
 const ProductLists = (props) => {
-    const {
-        orderBy,
-    } = props;
     const [products, setProducts] = useState();
     const [colValue, setcolValue] = useState('col-lg-4');
     const [gridValue, setgridValue] = useState(3);
@@ -30,8 +29,16 @@ useEffect(() => {
     } else {
         setProducts(ProductState.Products);
     }
-}, [ProductDispatch, ProductState, orderBy, setProducts]);
+}, [ProductDispatch, ProductState, setProducts]);
 
+    useEffect(() => {
+        const cart = JSON.parse(localStorage.getItem('EICart'));
+            if (cart) {
+                cart.cart.map(element => {
+                    props.dispatch(addProductToCart(element));
+                })
+            }
+    }, [props]);
 
 const changeLayout = (n) => {
     setgridValue(n);
@@ -76,4 +83,4 @@ const changeLayout = (n) => {
     );
 }
 
-export default ProductLists;
+export default connect()(ProductLists);
