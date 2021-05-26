@@ -19,34 +19,22 @@ const CartItem = (
 ) => {
     const [itemQuantity, setItemQuantity] = useState(quantity);
 
-    const handleQuantityChange = (e) => {
-        const value = e.target.value;
-        console.log('value: ', value);
-          if(value > 0 && value <= 10) {
-              setItemQuantity(value);
-              dispatch(addProductToCart(id));
-        }
-    };
     const handleQuantitydataChange = (e) => {
         const value = e.target.value;
-        console.log('value: ', value);
         const oldCart = localStorage.getItem('EICart');
         let updatedCart = [];
           if(value > 0) {
               setItemQuantity(value);
-              console.log('quantity: ', quantity)
               JSON.parse(oldCart).cart.map(item => {
                   if (item.id === id) {
                     dispatch(addProductToCart({...item, quantity: parseInt(e.target.value)}));
                     updatedCart.push({...item, quantity: parseInt(e.target.value)});
                   } else updatedCart.push(item);
               })
-              console.log('updatedCart', updatedCart);
               localStorage.setItem('EICart', JSON.stringify({
                   cart: updatedCart,
               }))
           } else {
-              console.log('value is zero');
               setItemQuantity(0);
           }
       };
