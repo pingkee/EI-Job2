@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import Product from "../../components/Product/Product";
 import ClipLoader from "react-spinners/ClipLoader";
-import {orderByFilter} from "../../pipes/orderByFilter";
 import LayoutMode from "../../components/LayoutMode/LayoutMode";
 import ContextProduct from '../../context/ContextProduct';
 import { ProductStateAction } from '../../reducers/reducerProduct';
@@ -26,7 +25,7 @@ useEffect(() => {
                         Products: json,
                     }
                 });
-                setProducts(orderByFilter(json, orderBy));
+                setProducts(json);
             });
     } else {
         setProducts(ProductState.Products);
@@ -48,7 +47,7 @@ const changeLayout = (n) => {
     setcolValue(`col-lg-${realGridValue}`);
 };
     return (
-        <div className="col-lg-9">
+        <div className="col-lg-12">
             <div className="row mb-3">
                 <div className="col-12 d-none d-lg-block d-xl-block">
                     <div className="card ">

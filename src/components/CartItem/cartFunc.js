@@ -1,5 +1,4 @@
-import {connect} from 'react-redux';
-import {addProductToCart, decrementCartQuantity, incrementCartQuantity, removeProductToCart} from "../../actions";
+import {addProductToCart, removeProductToCart} from "../../actions";
 
 export const addToCart = (product, dispatch) => {
     dispatch(addProductToCart({...product}))
@@ -49,29 +48,4 @@ export const removeCartItem = (id, dispatch) => {
             localStorage.removeItem('EICart');
         }
     }
-};
-
-export const handleQuantityChange = (e, setItemQuantity, id, dispatch) => {
-  const value = e.target.value;
-
-    if(value > 0 && value <= 10) {
-        setItemQuantity(value);
-        dispatch(addProductToCart(id));
-    }
-};
-
-export const incrementOrDecrement = (e, type, itemQuantity, setItemQuantity) => {
-    const value = itemQuantity;
-
-    if(type === 'inc' && value < 10) {
-        setItemQuantity(itemQuantity + 1);
-        // increase Q
-    }
-
-
-    if(type === 'desc' && value > 1) {
-        setItemQuantity(itemQuantity - 1);
-        // decrease Q
-    }
-
 };
